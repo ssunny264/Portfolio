@@ -181,32 +181,53 @@ skillBars.forEach(bar => barObserver.observe(bar));
    replace the success block with a real API call (e.g.
    Formspree, Resend, or your own backend endpoint).
 ============================================================ */
-document.getElementById('sendBtn').addEventListener('click', () => {
+/* ── CONTACT FORM ── */
+document.getElementById('sendBtn').addEventListener('click', async () => {
   const name    = document.getElementById('name').value.trim();
   const email   = document.getElementById('email').value.trim();
+  const subject = document.getElementById('subject').value.trim();
   const message = document.getElementById('message').value.trim();
   const feedbackEl = document.getElementById('formMsg');
 
-  // Validation: require name, email, and message
+  // Validation
   if (!name || !email || !message) {
-    feedbackEl.style.display  = 'block';
-    feedbackEl.style.color    = '#FF4B1F'; // red for errors
-    feedbackEl.textContent    = '⚠ Please fill in your name, email, and message.';
-    return; // stop here — don't submit
+    feedbackEl.style.display = 'block';
+    feedbackEl.style.color   = '#FF4B1F';
+    feedbackEl.textContent   = '⚠ Please fill in your name, email, and message.';
+    return;
   }
 
-  // TODO: replace this block with a real API call to send the email
-  feedbackEl.style.display = 'block';
-  feedbackEl.style.color   = '#2DCE89'; // green for success
-  feedbackEl.textContent   = '✓ Message sent — I\'ll be in touch shortly!';
+  // Disable button while sending
+  const btn = document.getElementById('sendBtn');
+  btn.textContent = 'Sending...';
+  btn.disabled = true;
 
-  // Clear all form fields after a successful (mock) submission
-  ['name', 'email', 'subject', 'message'].forEach(id => {
-    document.getElementById(id).value = '';
-  });
+  try {
+    const response = await fetch('https://formspree.io/f/xgoblwyr', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email, subject, message })
+    });
 
-  // Hide the feedback message after 5 seconds
-  setTimeout(() => { feedbackEl.style.display = 'none'; }, 5000);
+    if (response.ok) {
+      feedbackEl.style.display = 'block';
+      feedbackEl.style.color   = '#2DCE89';
+      feedbackEl.textContent   = '✓ Message sent — I\'ll be in touch shortly!';
+      ['name', 'email', 'subject', 'message'].forEach(id => {
+        document.getElementById(id).value = '';
+      });
+    } else {
+      throw new Error('Send failed');
+    }
+  } catch {
+    feedbackEl.style.display = 'block';
+    feedbackEl.style.color   = '#FF4B1F';
+    feedbackEl.textContent   = '⚠ Something went wrong. Please email me directly at slbruner2@gmail.com';
+  }
+
+  btn.textContent = 'Send message →';
+  btn.disabled = false;
+  setTimeout(() => { feedbackEl.style.display = 'none'; }, 6000);
 });
 
 
