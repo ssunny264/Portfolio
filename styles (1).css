@@ -1,0 +1,995 @@
+/* ============================================================
+   PORTFOLIO STYLESHEET
+   Structure:
+     1. Design Tokens (CSS custom properties)
+     2. Reset & Base
+     3. Utilities
+     4. Navigation
+     5. Mobile Menu
+     6. Hero Section
+     7. Shared Section Styles
+     8. Skills Section
+     9. Projects Section
+    10. Experience / Timeline Section
+    11. Contact Section
+    12. Footer
+    13. Scroll Reveal Animation
+    14. Custom Cursor
+    15. Responsive (≤ 900px)
+    16. Reduced Motion
+============================================================ */
+
+
+/* ============================================================
+   1. DESIGN TOKENS
+   All colours, fonts, spacing, and radii live here as CSS
+   variables. Change --accent to retheme the entire site.
+============================================================ */
+:root {
+  /* Colour palette */
+  --ink:     #0E0E0E;  /* near-black — primary text and dark backgrounds */
+  --paper:   #F7F5F0;  /* warm off-white — page background */
+  --mid:     #6B6560;  /* medium grey — secondary / muted text */
+  --rule:    #D9D4CC;  /* light warm grey — borders and dividers */
+  --accent:  #1A6BFF;  /* blue — primary interactive colour */
+  --accent2: #FF4B1F;  /* orange-red — italic hero text, skill bar gradient end */
+  --white:   #FFFFFF;
+  --card-bg: #EFEDE8;  /* slightly darker than --paper — card and section backgrounds */
+
+  /* Typefaces */
+  --display: 'DM Serif Display', Georgia, serif;  /* headings */
+  --body:    'DM Sans', system-ui, sans-serif;     /* body text */
+  --mono:    'DM Mono', monospace;                 /* labels, pills, dates */
+
+  /* Layout */
+  --gap:  clamp(1.5rem, 4vw, 3rem);    /* responsive column gap */
+  --wide: min(1180px, 92vw);           /* max content width with side padding */
+  --r:    6px;                         /* default border-radius */
+}
+
+
+/* ============================================================
+   2. RESET & BASE
+   Minimal reset plus global body styles.
+============================================================ */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  /* Enables smooth anchor-link scrolling (e.g. nav clicks) */
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--body);
+  /* clamp() keeps font-size fluid between 15px and 17px */
+  font-size: clamp(15px, 1.05vw, 17px);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Custom scrollbar — WebKit only (Chrome, Safari, Edge) */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--paper); }
+::-webkit-scrollbar-thumb { background: var(--rule); border-radius: 3px; }
+
+
+/* ============================================================
+   3. UTILITIES
+   Small reusable helpers used across multiple components.
+============================================================ */
+
+/* Centres content and enforces the max content width */
+.container {
+  width: var(--wide);
+  margin-inline: auto;
+}
+
+/* Visually hidden but readable by screen readers */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+}
+
+/* Remove default link styling — colour and underline set per context */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Visible focus ring for keyboard navigation — meets WCAG 2.4.7 */
+a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+
+/* ============================================================
+   4. NAVIGATION
+   Fixed bar. Starts transparent; gains a frosted-glass
+   background (.scrolled) once the user scrolls past 50px
+   (toggled by script.js).
+============================================================ */
+#nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 1.1rem 0;
+  transition: background 0.3s, box-shadow 0.3s;
+}
+
+/* Scrolled state: semi-transparent blur background */
+#nav.scrolled {
+  background: rgba(247, 245, 240, 0.92);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 1px 0 var(--rule);
+}
+
+/* Inner container: logo left, links right */
+#nav .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Logotype */
+.nav-logo {
+  font-family: var(--display);
+  font-size: 1.25rem;
+  letter-spacing: -0.02em;
+}
+.nav-logo span { color: var(--accent); } /* the accent dot after the name */
+
+/* Desktop link list */
+.nav-links {
+  display: flex;
+  gap: 2.5rem;
+  list-style: none;
+}
+.nav-links a {
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--mid);
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--ink); }
+.nav-links a.active { color: var(--accent); } /* set by script.js IntersectionObserver */
+
+/* "Hire me" CTA pill — overrides the uppercase nav-link style */
+.nav-cta {
+  background: var(--ink);
+  color: var(--white) !important;
+  padding: 0.45rem 1.1rem;
+  border-radius: var(--r);
+  font-size: 0.83rem !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.02em !important;
+  text-transform: none !important;
+  transition: background 0.2s, transform 0.15s !important;
+}
+.nav-cta:hover {
+  background: var(--accent) !important;
+  color: var(--white) !important;
+  transform: translateY(-1px);
+}
+
+/* Hamburger button — hidden on desktop, shown on mobile */
+.hamburger {
+  display: none; /* shown via media query below */
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 4px;
+}
+.hamburger span {
+  display: block;
+  width: 22px; height: 2px;
+  background: var(--ink);
+  border-radius: 2px;
+  transition: transform 0.25s, opacity 0.25s;
+}
+/* Animate the three spans into an × when .open is toggled */
+.hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.hamburger.open span:nth-child(2) { opacity: 0; }
+.hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+
+/* ============================================================
+   5. MOBILE MENU
+   Full-width dropdown stacked below the nav bar.
+   Toggled via .open class added by script.js.
+============================================================ */
+.mobile-menu {
+  display: none; /* flex when .open */
+  flex-direction: column;
+  gap: 0;
+  position: fixed;
+  top: 60px; left: 0; right: 0;
+  z-index: 99;
+  background: var(--paper);
+  border-bottom: 1px solid var(--rule);
+  padding: 1rem 0 1.5rem;
+}
+.mobile-menu.open { display: flex; }
+.mobile-menu a {
+  padding: 0.7rem 6vw;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--ink);
+  border-bottom: 1px solid var(--rule);
+}
+.mobile-menu a:last-child { border-bottom: none; }
+
+
+/* ============================================================
+   6. HERO SECTION
+   Full-viewport-height two-column layout. Left: text + CTAs.
+   Right: floating profile card (hidden on mobile).
+============================================================ */
+#hero {
+  min-height: 100svh; /* svh = small viewport height — avoids mobile address bar */
+  display: flex;
+  align-items: center;
+  padding-top: 7rem;  /* offset for fixed nav */
+  padding-bottom: 4rem;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Two-column grid — collapses to single column on mobile */
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--gap);
+  align-items: center;
+}
+
+/* Small monospaced label above the headline */
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  color: var(--accent);
+  margin-bottom: 1.5rem;
+}
+/* Short horizontal rule drawn with a pseudo-element */
+.hero-eyebrow::before {
+  content: '';
+  display: block;
+  width: 28px; height: 1px;
+  background: var(--accent);
+}
+
+/* Main headline — fluid size between 2.8rem and 5rem */
+h1 {
+  font-family: var(--display);
+  font-size: clamp(2.8rem, 5.5vw, 5rem);
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  margin-bottom: 1.5rem;
+}
+h1 em {
+  font-style: italic;
+  color: var(--accent2); /* orange italic for emphasis word */
+}
+
+/* Subheading / elevator pitch copy */
+.hero-desc {
+  font-size: clamp(1rem, 1.3vw, 1.15rem);
+  color: var(--mid);
+  max-width: 44ch;
+  margin-bottom: 2.5rem;
+  font-weight: 300;
+}
+
+/* CTA button row */
+.btn-row {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+/* Base button styles */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.7rem 1.6rem;
+  border-radius: var(--r);
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: transform 0.15s, box-shadow 0.15s, background 0.2s;
+  cursor: pointer;
+  border: none;
+}
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+}
+
+/* Filled dark button */
+.btn-primary { background: var(--ink); color: var(--white); }
+.btn-primary:hover { background: var(--accent); }
+
+/* Outlined ghost button */
+.btn-ghost {
+  background: transparent;
+  color: var(--ink);
+  border: 1.5px solid var(--rule);
+}
+.btn-ghost:hover { border-color: var(--ink); }
+
+/* Right column: wraps the hero card */
+.hero-visual {
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+/* The white profile card */
+.hero-card {
+  background: var(--white);
+  border-radius: 20px;
+  padding: 2.5rem;
+  width: 100%;
+  max-width: 380px;
+  box-shadow: 0 24px 64px rgba(0,0,0,0.09), 0 4px 12px rgba(0,0,0,0.06);
+  position: relative; /* so float-tags can position against this */
+}
+
+/* Gradient circle showing initials */
+.hero-avatar {
+  width: 72px; height: 72px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--display);
+  font-size: 1.6rem;
+  color: var(--white);
+  margin-bottom: 1.25rem;
+}
+
+/* Name and title inside the card */
+.hero-card h3 {
+  font-family: var(--display);
+  font-size: 1.3rem;
+  margin-bottom: 0.25rem;
+}
+.hero-card p {
+  font-size: 0.85rem;
+  color: var(--mid);
+  margin-bottom: 1.5rem;
+}
+
+/* Three-column stats strip at the bottom of the card */
+.stat-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0.75rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--rule);
+}
+.stat { text-align: center; }
+.stat-num {
+  font-family: var(--display);
+  font-size: 1.5rem;
+  display: block;
+  line-height: 1;
+  margin-bottom: 0.2rem;
+}
+.stat-label {
+  font-size: 0.72rem;
+  color: var(--mid);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Floating status badges that hover around the card */
+.float-tag {
+  position: absolute;
+  background: var(--white);
+  border-radius: 10px;
+  padding: 0.6rem 1rem;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+  font-size: 0.8rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  animation: floatY 3s ease-in-out infinite;
+}
+.float-tag-1 { top: -18px; right: -20px; }
+.float-tag-2 { bottom: 30px; left: -24px; animation-delay: 1.5s; } /* offset so they don't sync */
+
+/* Coloured status dot inside a float-tag */
+.float-tag .dot { width: 8px; height: 8px; border-radius: 50%; }
+.dot-green { background: #2DCE89; }
+.dot-amber { background: #FF9F43; }
+
+/* Vertical floating animation keyframes */
+@keyframes floatY {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-6px); }
+}
+
+
+/* ============================================================
+   7. SHARED SECTION STYLES
+   Reused across Skills, Projects, Experience, and Contact.
+============================================================ */
+
+/* Vertical padding scales with viewport width */
+section {
+  padding: clamp(4rem, 8vw, 7rem) 0;
+}
+
+/* Small uppercase monospaced label above section headings */
+.section-label {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+}
+
+/* Section heading (h2) */
+h2 {
+  font-family: var(--display);
+  font-size: clamp(2rem, 3.5vw, 3rem);
+  letter-spacing: -0.025em;
+  line-height: 1.1;
+  margin-bottom: 1rem;
+}
+
+/* Introductory paragraph below the heading */
+.section-intro {
+  font-size: clamp(0.95rem, 1.2vw, 1.05rem);
+  color: var(--mid);
+  max-width: 54ch;
+  font-weight: 300;
+}
+
+/* Wrapper for the label + heading + intro trio */
+.section-head {
+  margin-bottom: clamp(2.5rem, 5vw, 4rem);
+}
+
+
+/* ============================================================
+   8. SKILLS SECTION
+   Dark background. Auto-fill grid of skill cards. Each card
+   contains an animated progress bar driven by data-width on
+   the .skill-bar element (0–1 scale).
+============================================================ */
+
+/* Dark background for the whole section */
+#skills { background: var(--ink); color: var(--white); }
+#skills .section-label { color: var(--accent); }
+#skills h2 { color: var(--white); }
+#skills .section-intro { color: rgba(255,255,255,0.55); }
+
+/* Auto-fill grid — cards are at least 240px wide */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1.5px; /* hair-thin gap acts as a grid line effect */
+  border: 1.5px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  overflow: hidden; /* clips rounded corners of the outer border */
+}
+
+/* Individual skill card */
+.skill-card {
+  background: rgba(255,255,255,0.03);
+  padding: 2rem 1.75rem;
+  transition: background 0.2s;
+  cursor: default;
+}
+.skill-card:hover { background: rgba(255,255,255,0.07); }
+
+/* Emoji icon at the top of the card */
+.skill-icon {
+  font-size: 1.6rem;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.skill-card h4 {
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: 0.4rem;
+  color: var(--white);
+}
+.skill-card p {
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.45);
+  line-height: 1.55;
+}
+
+/* Progress bar container */
+.skill-bar-wrap { margin-top: 1rem; }
+.skill-bar-bg {
+  height: 3px;
+  background: rgba(255,255,255,0.1); /* unfilled track */
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+/* The filled portion — starts at scaleX(0), animated to scaleX(data-width)
+   by IntersectionObserver in script.js when the card enters the viewport */
+.skill-bar {
+  height: 100%;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  transform-origin: left;
+  transform: scaleX(0);
+  transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.skill-bar.animate { transform: scaleX(1); } /* script.js adds this class */
+
+
+/* ============================================================
+   9. PROJECTS SECTION
+   Asymmetric 12-column CSS grid. Three card size variants:
+     .featured  → spans 7 cols (main feature card)
+     .side      → spans 5 cols (paired alongside featured)
+     .full      → spans 4 cols (three fit per row)
+   All collapse to full width on mobile.
+============================================================ */
+
+/* 12-column grid */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 1.5rem;
+}
+
+/* Base project card */
+.project-card {
+  background: var(--white);
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--rule);
+  transition: transform 0.25s, box-shadow 0.25s;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+}
+.project-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 48px rgba(0,0,0,0.1);
+}
+
+/* Column span classes */
+.project-card.featured { grid-column: span 7; }
+.project-card.side     { grid-column: span 5; }
+.project-card.full     { grid-column: span 4; }
+
+/* Thumbnail area — 16:9 ratio */
+.project-thumb {
+  aspect-ratio: 16/9;
+  position: relative;
+  overflow: hidden;
+}
+/* Gradient placeholder background with centred emoji */
+.project-thumb-bg {
+  width: 100%; height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3.5rem;
+  transition: transform 0.4s;
+}
+/* Subtle zoom on hover */
+.project-card:hover .project-thumb-bg { transform: scale(1.04); }
+
+/* Thumbnail gradient colour variants — swap these for real screenshots */
+.bg-blue   { background: linear-gradient(135deg, #1A6BFF22, #1A6BFF55); }
+.bg-orange { background: linear-gradient(135deg, #FF4B1F22, #FF4B1F55); }
+.bg-teal   { background: linear-gradient(135deg, #00B4AA22, #00B4AA55); }
+.bg-violet { background: linear-gradient(135deg, #8B5CF622, #8B5CF655); }
+.bg-amber  { background: linear-gradient(135deg, #F59E0B22, #F59E0B55); }
+
+/* Category badge overlaid on the thumbnail */
+.project-tag {
+  position: absolute;
+  top: 0.75rem; left: 0.75rem;
+  background: var(--white);
+  border-radius: 4px;
+  padding: 0.2rem 0.55rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--mid);
+}
+
+/* Card body: title, description, footer */
+.project-body {
+  padding: 1.5rem;
+  flex: 1; /* ensures all cards in a row stretch to equal height */
+  display: flex;
+  flex-direction: column;
+}
+.project-body h3 {
+  font-family: var(--display);
+  font-size: 1.2rem;
+  margin-bottom: 0.4rem;
+}
+.project-body p {
+  font-size: 0.85rem;
+  color: var(--mid);
+  margin-bottom: 1rem;
+  flex: 1; /* pushes the footer to the bottom of the card */
+}
+
+/* Footer row inside card: tech pills left, link right */
+.project-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 0.85rem;
+  border-top: 1px solid var(--rule);
+}
+
+/* Reusable technology tag pills */
+.tech-pills {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+.pill {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  background: var(--card-bg);
+  color: var(--mid);
+  padding: 0.18rem 0.55rem;
+  border-radius: 4px;
+}
+
+/* "View →" link — arrow nudges on hover */
+.project-link {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  transition: gap 0.15s;
+}
+.project-link:hover { gap: 0.55rem; }
+
+
+/* ============================================================
+   10. EXPERIENCE / TIMELINE SECTION
+   Vertical list with a continuous left border acting as the
+   timeline axis. Each dot highlights on hover.
+============================================================ */
+#experience { background: var(--card-bg); }
+
+/* Timeline wrapper — left padding creates space for the axis line */
+.timeline {
+  position: relative;
+  padding-left: 2rem;
+}
+/* The vertical axis line drawn with a pseudo-element */
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 8px; bottom: 8px;
+  width: 2px;
+  background: var(--rule);
+}
+
+/* Individual timeline entry */
+.timeline-item {
+  position: relative;
+  padding-bottom: 3rem;
+}
+.timeline-item:last-child { padding-bottom: 0; }
+
+/* Circle marker on the axis line */
+.timeline-dot {
+  position: absolute;
+  left: -2rem;
+  top: 6px;
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: var(--white);
+  border: 2px solid var(--rule);
+  transform: translateX(-6px); /* centres dot on the 2px axis line */
+  transition: border-color 0.2s, background 0.2s;
+}
+/* Fill the dot with accent colour on hover */
+.timeline-item:hover .timeline-dot {
+  border-color: var(--accent);
+  background: var(--accent);
+}
+
+/* Date range label */
+.timeline-date {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: var(--mid);
+  margin-bottom: 0.4rem;
+}
+
+/* Job title + company name on the same line */
+.timeline-header {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.4rem;
+}
+.timeline-header h3 {
+  font-family: var(--display);
+  font-size: 1.15rem;
+}
+.timeline-company {
+  font-size: 0.82rem;
+  color: var(--accent);
+  font-weight: 500;
+}
+
+/* Description paragraph */
+.timeline-desc {
+  font-size: 0.9rem;
+  color: var(--mid);
+  max-width: 60ch;
+  margin-bottom: 0.85rem;
+}
+
+
+/* ============================================================
+   11. CONTACT SECTION
+   Dark background matching the nav/footer. Centred layout with
+   a frosted-glass form card. Social icon row below the form.
+============================================================ -->
+============================================================ */
+#contact {
+  background: var(--ink);
+  color: var(--white);
+  text-align: center;
+}
+#contact h2 { color: var(--white); margin-bottom: 0.75rem; }
+#contact .section-intro {
+  color: rgba(255,255,255,0.5);
+  max-width: 44ch;
+  margin-inline: auto;
+  margin-bottom: 2.5rem;
+}
+
+/* Form card */
+.contact-form {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+  padding: clamp(2rem, 5vw, 3.5rem);
+  max-width: 560px;
+  margin-inline: auto;
+  text-align: left;
+}
+
+/* Two-column row for name + email inputs */
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+/* Field wrapper: label + input stacked */
+.field { margin-bottom: 1.25rem; }
+.field label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: rgba(255,255,255,0.6);
+  margin-bottom: 0.45rem;
+  letter-spacing: 0.03em;
+}
+
+/* Shared input / textarea styles */
+.field input,
+.field textarea {
+  width: 100%;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: var(--r);
+  color: var(--white);
+  font-family: var(--body);
+  font-size: 0.92rem;
+  padding: 0.75rem 1rem;
+  transition: border-color 0.2s, background 0.2s;
+  outline: none;
+}
+.field input::placeholder,
+.field textarea::placeholder { color: rgba(255,255,255,0.25); }
+
+/* Highlight border + lighten background on focus */
+.field input:focus,
+.field textarea:focus {
+  border-color: var(--accent);
+  background: rgba(255,255,255,0.1);
+}
+.field textarea {
+  resize: vertical;
+  min-height: 110px;
+}
+
+/* Full-width submit button */
+.form-submit { width: 100%; padding: 0.85rem; font-size: 1rem; }
+
+/* Success / error message shown after submit attempt */
+.form-msg {
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 0.85rem;
+  color: #2DCE89; /* green — overridden to red on error by script.js */
+  min-height: 1.2em;
+  display: none; /* toggled by script.js */
+}
+
+/* Social icon link row */
+.social-row {
+  display: flex;
+  justify-content: center;
+  gap: 1.25rem;
+  margin-top: 2.5rem;
+}
+.social-link {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  transition: background 0.2s, border-color 0.2s, transform 0.15s;
+}
+.social-link:hover {
+  background: rgba(255,255,255,0.1);
+  border-color: rgba(255,255,255,0.35);
+  transform: translateY(-2px);
+}
+
+
+/* ============================================================
+   12. FOOTER
+   Minimal two-column bar sharing the dark background from
+   the contact section above it.
+============================================================ */
+footer {
+  background: var(--ink);
+  border-top: 1px solid rgba(255,255,255,0.07);
+  padding: 1.75rem 0;
+  color: rgba(255,255,255,0.35);
+  font-size: 0.8rem;
+}
+footer .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+footer a { color: rgba(255,255,255,0.35); transition: color 0.2s; }
+footer a:hover { color: var(--white); }
+
+
+/* ============================================================
+   13. SCROLL REVEAL ANIMATION
+   Elements with .reveal start invisible and slightly offset.
+   script.js adds .visible via IntersectionObserver when the
+   element enters the viewport. Stagger siblings with
+   .reveal-delay-1 / -2 / -3 for a cascading effect.
+============================================================ */
+.reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Staggered transition delays */
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+
+
+/* ============================================================
+   14. CUSTOM CURSOR
+   Two fixed elements: a small filled dot and a larger hollow
+   ring. The ring lags behind with lerp interpolation in
+   script.js. mix-blend-mode: difference inverts colours under
+   the dot for contrast on any background. Hidden on mobile.
+============================================================ */
+.cursor-dot {
+  width: 8px; height: 8px;
+  background: var(--accent);
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none; /* never intercepts mouse events */
+  z-index: 9999;
+  transform: translate(-50%, -50%); /* centred on mouse coords */
+  transition: opacity 0.3s, transform 0.15s;
+  mix-blend-mode: difference;
+}
+.cursor-ring {
+  width: 36px; height: 36px;
+  border: 1.5px solid var(--accent);
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%);
+  /* width/height transition enables the "expand on hover" effect */
+  transition: transform 0.1s linear, width 0.3s, height 0.3s, opacity 0.3s;
+  opacity: 0.5;
+}
+
+
+/* ============================================================
+   15. RESPONSIVE — MOBILE (≤ 900px)
+   Collapses the two-column hero to single column, hides the
+   desktop nav and hero card, switches the project grid to
+   single column, stacks the form row, and hides the cursor.
+============================================================ */
+@media (max-width: 900px) {
+  /* Hero: single column, hide the right-side card */
+  .hero-grid { grid-template-columns: 1fr; }
+  .hero-visual { display: none; }
+
+  /* Nav: hide desktop links, show hamburger */
+  .nav-links, .nav-cta { display: none; }
+  .hamburger { display: flex; }
+
+  /* Projects: all cards go full width */
+  .projects-grid { grid-template-columns: 1fr; }
+  .project-card.featured,
+  .project-card.side,
+  .project-card.full { grid-column: span 1; }
+
+  /* Contact form: stack the two-column name/email row */
+  .form-row { grid-template-columns: 1fr; }
+
+  /* Cursor elements are meaningless on touch devices */
+  .cursor-dot, .cursor-ring { display: none; }
+}
+
+
+/* ============================================================
+   16. REDUCED MOTION
+   Respects the OS-level "reduce motion" accessibility setting.
+   Disables all animations and transitions, and makes reveal
+   elements immediately visible.
+============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+  /* Reveal elements skip the fade-in and appear immediately */
+  .reveal { opacity: 1; transform: none; }
+}

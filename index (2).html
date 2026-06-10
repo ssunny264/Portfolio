@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sara Sunny — Data Analyst</title>
+
+  <!-- ============================================================
+       FONTS
+       Preconnect speeds up the Google Fonts request.
+       Three families loaded:
+         - DM Serif Display  → headings (display / italic)
+         - DM Sans           → body text (300, 400, 500 weights)
+         - DM Mono           → labels, code tags, eyebrows
+  ============================================================ -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <!-- Main stylesheet -->
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<!-- ============================================================
+     CUSTOM CURSOR
+     Two layered elements: a small filled dot that follows the
+     mouse exactly, and a larger hollow ring that lags behind
+     (lerped in script.js). Hidden on mobile via CSS.
+============================================================ -->
+<div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+
+<!-- ============================================================
+     NAVIGATION
+     Fixed to the top of the viewport. Gains a .scrolled class
+     (frosted-glass background) once the user scrolls past 50px.
+     Active nav link is highlighted by script.js via
+     IntersectionObserver on each section.
+============================================================ -->
+<nav id="nav" aria-label="Main navigation">
+  <div class="container">
+
+    <!-- Logo / home link -->
+    <a href="#hero" class="nav-logo">Sara<span>.</span></a>
+
+    <!-- Desktop links — hidden below 900px via CSS -->
+    <ul class="nav-links" role="list">
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#projects">Work</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#contact" class="nav-cta">Hire me</a></li>
+    </ul>
+
+    <!-- Hamburger button — shown below 900px, toggles mobile menu -->
+    <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+  </div>
+</nav>
+
+
+<!-- ============================================================
+     MOBILE MENU
+     Full-width dropdown revealed when the hamburger is clicked.
+     Each link closes the menu on click (handled in script.js).
+============================================================ -->
+<div class="mobile-menu" id="mobileMenu" role="dialog" aria-label="Mobile navigation">
+  <a href="#skills" class="mobile-link">Skills</a>
+  <a href="#projects" class="mobile-link">Work</a>
+  <a href="#experience" class="mobile-link">Experience</a>
+  <a href="#contact" class="mobile-link">Hire me →</a>
+</div>
+
+
+<!-- ============================================================
+     HERO SECTION
+     Full-viewport-height opening. Left column: headline + CTA
+     buttons. Right column: profile card with floating status
+     badges and a stats row. The right column is hidden on mobile.
+============================================================ -->
+<section id="hero" aria-label="Introduction">
+  <div class="container">
+    <div class="hero-grid">
+
+      <!-- Left: text content -->
+      <div>
+        <!-- Eyebrow label — small monospaced tag above the headline -->
+        <p class="hero-eyebrow">Open to new opportunities</p>
+
+        <!-- Main headline — <em> renders in italic accent colour -->
+        <h1>
+          Turning <em>data</em> into<br>
+          decisions that matter.
+        </h1>
+
+        <!-- Subheading / elevator pitch -->
+        <p class="hero-desc">
+          Data Analyst based in Middleburg, FL. I build dashboards,
+          automate workflows, and uncover insights that drive real business outcomes.
+        </p>
+
+        <!-- CTA buttons -->
+        <div class="btn-row">
+          <a href="#projects" class="btn btn-primary">View my work →</a>
+          <a href="#contact" class="btn btn-ghost">Get in touch</a>
+        </div>
+      </div>
+
+      <!-- Right: profile card (desktop only) -->
+      <div class="hero-visual">
+        <div class="hero-card">
+
+          <!-- Floating status badges — positioned absolutely, animated in CSS -->
+          <div class="float-tag float-tag-1">
+            <span class="dot dot-green"></span> Open to work
+          </div>
+          <div class="float-tag float-tag-2">
+            <span class="dot dot-amber"></span> 3.74 GPA
+          </div>
+
+          <!-- Avatar initials circle -->
+          <div class="hero-avatar">SS</div>
+
+          <!-- Name and title -->
+          <h3>Sara Sunny</h3>
+          <p>Data Analyst · Dashboard Developer</p>
+
+          <!-- Stats row -->
+          <div class="stat-row">
+            <div class="stat">
+              <span class="stat-num">9+</span>
+              <span class="stat-label">Years</span>
+            </div>
+            <div class="stat">
+              <span class="stat-num">$700K</span>
+              <span class="stat-label">Recovered</span>
+            </div>
+            <div class="stat">
+              <span class="stat-num">90%</span>
+              <span class="stat-label">Time Saved</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <!-- /hero-visual -->
+
+    </div>
+  </div>
+</section>
+<!-- /hero -->
+
+
+<!-- ============================================================
+     SKILLS SECTION
+     Dark-background section with a grid of skill cards. Each card
+     has an animated progress bar that fills when the card enters
+     the viewport (handled by IntersectionObserver in script.js).
+     The data-width attribute (0–1) controls how far the bar fills.
+============================================================ -->
+<section id="skills" aria-labelledby="skills-heading">
+  <div class="container">
+
+    <!-- Section header -->
+    <div class="section-head reveal">
+      <p class="section-label">What I bring</p>
+      <h2 id="skills-heading">Skills &amp; tools</h2>
+      <p class="section-intro">A full toolkit for data analysis, reporting, and workflow automation — from raw data to executive-ready dashboards.</p>
+    </div>
+
+    <!-- Skills grid — auto-fills columns at 240px min width -->
+    <div class="skills-grid">
+
+      <div class="skill-card reveal">
+        <span class="skill-icon">📊</span>
+        <h4>Data Visualization</h4>
+        <p>Power BI dashboards, trend analysis, real-time reporting for internal and external stakeholders</p>
+        <div class="skill-bar-wrap"><div class="skill-bar-bg"><div class="skill-bar" data-width="0.95"></div></div></div>
+      </div>
+
+      <div class="skill-card reveal reveal-delay-1">
+        <span class="skill-icon">⚙️</span>
+        <h4>Automation & VBA</h4>
+        <p>Custom VBA macros that cut data processing time by 90% across high-volume datasets</p>
+        <div class="skill-bar-wrap"><div class="skill-bar-bg"><div class="skill-bar" data-width="0.9"></div></div></div>
+      </div>
+
+      <div class="skill-card reveal reveal-delay-2">
+        <span class="skill-icon">🗄️</span>
+        <h4>Database Management</h4>
+        <p>Microsoft Access database design, SQL querying, and data integrity for compliance-driven environments</p>
+        <div class="skill-bar-wrap"><div class="skill-bar-bg"><div class="skill-bar" data-width="0.85"></div></div></div>
+      </div>
+
+      <div class="skill-card reveal reveal-delay-3">
+        <span class="skill-icon">🔍</span>
+        <h4>Data Analysis</h4>
+        <p>Warranty claim analysis, auditing, quantitative reporting, and cost-saving opportunity identification</p>
+        <div class="skill-bar-wrap"><div class="skill-bar-bg"><div class="skill-bar" data-width="0.92"></div></div></div>
+      </div>
+
+      <div class="skill-card reveal">
+        <span class="skill-icon">🐍</span>
+        <h4>Programming</h4>
+        <p>Python, SQL, Java, HTML, CSS — applied to data pipelines, reporting, and process automation</p>
+        <div class="skill-bar-wrap"><div class="skill-bar-bg"><div class="skill-bar" data-width="0.75"></div></div></div>
+      </div>
+
+      <div class="skill-card reveal reveal-delay-1">
+        <span class="skill-icon">🤝</span>
+        <h4>Stakeholder Reporting</h4>
+        <p>Weekly executive reporting, cross-functional collaboration, and Salesforce CRM management</p>
+        <div class="skill-bar-wrap"><div class="skill-bar-bg"><div class="skill-bar" data-width="0.88"></div></div></div>
+      </div>
+
+    </div>
+    <!-- /skills-grid -->
+
+  </div>
+</section>
+<!-- /skills -->
+
+
+<!-- ============================================================
+     PROJECTS SECTION
+     Asymmetric 12-column CSS grid. Cards use span classes to
+     control width: .featured (7 cols), .side (5 cols),
+     .full (4 cols each → 3 per row). Collapses to 1 column
+     on mobile. Each card is keyboard-accessible (tabindex + role).
+============================================================ -->
+<section id="projects" aria-labelledby="projects-heading">
+  <div class="container">
+
+    <!-- Section header -->
+    <div class="section-head reveal">
+      <p class="section-label">Selected work</p>
+      <h2 id="projects-heading">Projects</h2>
+      <p class="section-intro">A selection of analytical and automation projects I've built and delivered.</p>
+    </div>
+
+    <div class="projects-grid">
+
+      <!-- Project card: FEATURED (spans 7 of 12 columns) -->
+      <article class="project-card featured reveal" tabindex="0" role="button" aria-label="View Warranty Analytics Dashboard project">
+        <div class="project-thumb">
+          <div class="project-thumb-bg bg-blue">📊</div>
+          <span class="project-tag">Dashboard</span>
+        </div>
+        <div class="project-body">
+          <h3>Warranty Analytics Dashboard</h3>
+          <p>Built and maintained Power BI dashboards providing real-time warranty claim visibility to internal and external stakeholders at Utilimaster. Identified inefficiencies that led to significant cost-saving opportunities across high-volume datasets.</p>
+          <div class="project-footer">
+            <div class="tech-pills">
+              <span class="pill">Power BI</span><span class="pill">SQL</span><span class="pill">Excel</span>
+            </div>
+            <a href="https://github.com/ssunny264" class="project-link" target="_blank" rel="noopener" aria-label="View on GitHub">GitHub →</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Project card: SIDE (spans 5 of 12 columns) -->
+      <article class="project-card side reveal reveal-delay-1" tabindex="0" role="button" aria-label="View VBA Automation project">
+        <div class="project-thumb">
+          <div class="project-thumb-bg bg-orange">⚙️</div>
+          <span class="project-tag">Automation</span>
+        </div>
+        <div class="project-body">
+          <h3>VBA Macro Automation</h3>
+          <p>Developed custom VBA macros to streamline data transformation, reducing processing time for high-volume datasets by 90% and increasing reporting accuracy.</p>
+          <div class="project-footer">
+            <div class="tech-pills">
+              <span class="pill">VBA</span><span class="pill">Excel</span>
+            </div>
+            <a href="https://github.com/ssunny264" class="project-link" target="_blank" rel="noopener">GitHub →</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Project card: FULL -->
+      <article class="project-card full reveal" tabindex="0" role="button" aria-label="View Recall Expense Audit project">
+        <div class="project-thumb">
+          <div class="project-thumb-bg bg-teal">💰</div>
+          <span class="project-tag">Audit</span>
+        </div>
+        <div class="project-body">
+          <h3>Recall Expense Audit</h3>
+          <p>Tracked and audited complex technician expense datasets during a recall campaign, driving $700K in financial recovery in a single campaign.</p>
+          <div class="project-footer">
+            <div class="tech-pills"><span class="pill">Excel</span><span class="pill">Salesforce</span></div>
+            <a href="https://github.com/ssunny264" class="project-link" target="_blank" rel="noopener">GitHub →</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Project card: FULL -->
+      <article class="project-card full reveal reveal-delay-1" tabindex="0" role="button" aria-label="View Resident Progress Database project">
+        <div class="project-thumb">
+          <div class="project-thumb-bg bg-violet">🗄️</div>
+          <span class="project-tag">Database</span>
+        </div>
+        <div class="project-body">
+          <h3>Resident Progress Database</h3>
+          <p>Designed and deployed a Microsoft Access database to track progress for 100 residents at Oaklawn Psychiatric Center, built with ongoing manager feedback.</p>
+          <div class="project-footer">
+            <div class="tech-pills"><span class="pill">MS Access</span><span class="pill">SQL</span></div>
+            <a href="https://github.com/ssunny264" class="project-link" target="_blank" rel="noopener">GitHub →</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Project card: FULL -->
+      <article class="project-card full reveal reveal-delay-2" tabindex="0" role="button" aria-label="View IL Compliance Tracker project">
+        <div class="project-thumb">
+          <div class="project-thumb-bg bg-amber">📋</div>
+          <span class="project-tag">Compliance</span>
+        </div>
+        <div class="project-body">
+          <h3>IL Compliance Tracker</h3>
+          <p>Built a Microsoft Access database to track Independent Living requirements for youth 15+, ensuring 100% compliance with DCS documentation standards.</p>
+          <div class="project-footer">
+            <div class="tech-pills"><span class="pill">MS Access</span><span class="pill">Reporting</span></div>
+            <a href="https://github.com/ssunny264" class="project-link" target="_blank" rel="noopener">GitHub →</a>
+          </div>
+        </div>
+      </article>
+
+    </div>
+    <!-- /projects-grid -->
+
+  </div>
+</section>
+<!-- /projects -->
+
+
+<!-- ============================================================
+     EXPERIENCE SECTION
+     Vertical timeline. A pseudo-element on .timeline draws the
+     connecting line. Each .timeline-dot highlights on hover.
+     Add or remove .timeline-item blocks to update your career.
+============================================================ -->
+<section id="experience" aria-labelledby="experience-heading">
+  <div class="container" style="max-width: min(780px, 92vw);">
+
+    <!-- Section header -->
+    <div class="section-head reveal">
+      <p class="section-label">Career</p>
+      <h2 id="experience-heading">Experience</h2>
+    </div>
+
+    <div class="timeline">
+
+      <!-- Timeline entry 1 — most recent first -->
+      <div class="timeline-item reveal">
+        <div class="timeline-dot"></div>
+        <p class="timeline-date">02/2022 — Present</p>
+        <div class="timeline-header">
+          <h3>Warranty Data Analyst / Customer Service Representative</h3>
+          <span class="timeline-company">Utilimaster · Remote</span>
+        </div>
+        <p class="timeline-desc">Transformed and analyzed high-volume warranty claim data to pinpoint inefficiencies. Built Power BI dashboards for real-time stakeholder visibility. Developed VBA macros cutting processing time by 90%. Drove $700K in financial recovery during a single recall campaign through rigorous expense auditing.</p>
+        <div class="tech-pills">
+          <span class="pill">Power BI</span><span class="pill">VBA</span><span class="pill">SQL</span><span class="pill">Salesforce</span><span class="pill">Excel</span>
+        </div>
+      </div>
+
+      <!-- Timeline entry 2 -->
+      <div class="timeline-item reveal reveal-delay-1">
+        <div class="timeline-dot"></div>
+        <p class="timeline-date">03/2016 — 03/2022</p>
+        <div class="timeline-header">
+          <h3>Program Coordinator</h3>
+          <span class="timeline-company">Oaklawn Psychiatric Center · Mishawaka, IN</span>
+        </div>
+        <p class="timeline-desc">Directed payroll processing and attendance tracking for a 20-person team ensuring 100% regulatory compliance. Co-designed a Microsoft Access database tracking 100 residents' progress. Developed and led monthly staff training programs.</p>
+        <div class="tech-pills">
+          <span class="pill">MS Access</span><span class="pill">Excel</span><span class="pill">Reporting</span>
+        </div>
+      </div>
+
+      <!-- Timeline entry 3 -->
+      <div class="timeline-item reveal reveal-delay-2">
+        <div class="timeline-dot"></div>
+        <p class="timeline-date">06/2013 — 02/2016</p>
+        <div class="timeline-header">
+          <h3>Independent Living Clerical Assistant</h3>
+          <span class="timeline-company">Youth Opportunity Center · Muncie, IN</span>
+        </div>
+        <p class="timeline-desc">Monitored and audited Independent Living documentation for youth 15+, ensuring 100% DCS compliance. Built a Microsoft Access database to track program requirements and administered high-priority reporting schedules.</p>
+        <div class="tech-pills">
+          <span class="pill">MS Access</span><span class="pill">Compliance</span><span class="pill">Reporting</span>
+        </div>
+      </div>
+
+    </div>
+    <!-- /timeline -->
+
+  </div>
+</section>
+<!-- /experience -->
+
+
+<!-- ============================================================
+     CONTACT SECTION
+     Dark background. Centred heading with a card-framed form.
+     Social icon links sit below the form.
+============================================================ -->
+<section id="contact" aria-labelledby="contact-heading">
+  <div class="container">
+
+    <p class="section-label" style="color:var(--accent)">Let's talk</p>
+    <h2 id="contact-heading">Have a role in mind?</h2>
+    <p class="section-intro">I'd love to hear about your data challenges — I reply to every message within 24 hours.</p>
+
+    <!-- Contact form card -->
+    <div class="contact-form">
+
+      <div class="form-row">
+        <div class="field">
+          <label for="name">Your name</label>
+          <input type="text" id="name" placeholder="Jane Smith" autocomplete="name" />
+        </div>
+        <div class="field">
+          <label for="email">Email</label>
+          <input type="email" id="email" placeholder="jane@company.com" autocomplete="email" />
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="subject">Subject</label>
+        <input type="text" id="subject" placeholder="Job opportunity / project enquiry" />
+      </div>
+
+      <div class="field">
+        <label for="message">Message</label>
+        <textarea id="message" placeholder="Hi Sara, I'd love to discuss..."></textarea>
+      </div>
+
+      <button class="btn btn-primary form-submit" id="sendBtn" type="button">Send message →</button>
+      <p class="form-msg" id="formMsg">✓ Message sent — I'll be in touch shortly!</p>
+
+    </div>
+    <!-- /contact-form -->
+
+    <!-- Social icon links -->
+    <div class="social-row" aria-label="Social links">
+
+      <!-- GitHub -->
+      <a href="https://github.com/ssunny264" class="social-link" aria-label="GitHub" target="_blank" rel="noopener">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.2 11.38.6.1.82-.26.82-.58v-2.17c-3.34.73-4.04-1.61-4.04-1.61-.55-1.38-1.34-1.75-1.34-1.75-1.08-.74.08-.73.08-.73 1.2.09 1.83 1.23 1.83 1.23 1.07 1.83 2.8 1.3 3.48 1 .1-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.23-3.22-.12-.3-.53-1.52.12-3.18 0 0 1-.32 3.3 1.23a11.5 11.5 0 0 1 3-.4c1.02 0 2.04.13 3 .4 2.28-1.55 3.28-1.23 3.28-1.23.66 1.66.25 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.8 5.63-5.48 5.92.43.37.82 1.1.82 2.22v3.29c0 .32.22.69.83.57C20.57 21.8 24 17.3 24 12c0-6.63-5.37-12-12-12z"/></svg>
+      </a>
+
+      <!-- LinkedIn -->
+      <a href="https://www.linkedin.com/in/sara-sunny-ba2075230" class="social-link" aria-label="LinkedIn" target="_blank" rel="noopener">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.56V14.9c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.95v5.64H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45zM22.23 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.46C23.2 24 24 23.23 24 22.28V1.72C24 .77 23.2 0 22.23 0z"/></svg>
+      </a>
+
+      <!-- Email -->
+      <a href="mailto:slbruner2@gmail.com" class="social-link" aria-label="Email">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+      </a>
+
+    </div>
+    <!-- /social-row -->
+
+  </div>
+</section>
+<!-- /contact -->
+
+
+<!-- ============================================================
+     FOOTER
+     Minimal two-column bar. Update the copyright name and year.
+============================================================ -->
+<footer>
+  <div class="container">
+    <span>© 2025 Sara Sunny.</span>
+    <span>Data Analyst · Middleburg, FL · <a href="mailto:slbruner2@gmail.com">slbruner2@gmail.com</a></span>
+  </div>
+</footer>
+
+
+<!-- ============================================================
+     SCRIPTS
+     Loaded at the end of <body> so the DOM is ready.
+============================================================ -->
+<script src="script.js"></script>
+
+</body>
+</html>
