@@ -304,7 +304,9 @@ CERTIFICATIONS:
 - CompTIA Security+ — Currently studying (in progress)
 - Microsoft Power BI Data Analyst (PL-300) — Currently studying (in progress)
 
-AVAILABILITY: Sara is actively seeking new opportunities and open to data analyst, BI analyst, and related roles.
+AVAILABILITY: Sara is actively seeking new opportunities and open to Data Analyst, BI Analyst, Junior Software Developer, and related roles.
+
+PROFESSIONAL REFERENCES: Available upon request
 
 HOBBIES & INTERESTS:
 - Sara loves reading and is always learning new things
