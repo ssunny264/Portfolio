@@ -292,6 +292,7 @@ EXPERIENCE:
 
 EDUCATION:
 Indiana University of South Bend — Bachelor of Science in Informatics, Jan 2020–May 2023, GPA 3.74
+Master of Science in Computer Science — Beginning Fall 2026 (in progress)
 
 SKILLS:
 - Data Visualization: Power BI, DAX, Dashboard Development, Trend Analysis, Reporting, PowerPoint
@@ -299,7 +300,15 @@ SKILLS:
   (Note: Python, SQL, Java are educational experience)
 - Professional: Attention to Detail, Database Management, Crisis Management, Quantitative Auditing, Cross-Functional Collaboration, Shipping Logistics
 
+CERTIFICATIONS:
+- CompTIA Security+ — Currently studying (in progress)
+- Microsoft Power BI Data Analyst (PL-300) — Currently studying (in progress)
+
 AVAILABILITY: Sara is actively seeking new opportunities and open to data analyst, BI analyst, and related roles.
+
+HOBBIES & INTERESTS:
+- Sara loves reading and is always learning new things
+- She has a natural curiosity and passion for continuous self-improvement
 
 Guidelines:
 - Be warm, concise, and professional
