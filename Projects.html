@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Coding Projects — Sara Sunny</title> 
+  <title>Coding Projects — Sara Sunny</title>
 
   <!-- ============================================================
        FONTS — same as main portfolio page
@@ -361,20 +361,20 @@
       <article class="code-card reveal" tabindex="0" data-category="python">
         <div class="code-thumb bg-blue">
           🐍
-          <span class="lang-badge">VBA/Excel</span>
-          <span class="status-badge status-progress">Completed</span>
+          <span class="lang-badge">Python</span>
+          <span class="status-badge status-progress">In Progress</span>
         </div>
         <div class="code-body">
           <h3>Data Cleaning Script</h3>
-          <p>VBA script to automate cleaning and standardizing messy Excel datasets — removing duplicates, fixing formatting, and flagging anomalies.</p>
+          <p>Python script to automate cleaning and standardizing messy CSV datasets — removing duplicates, fixing formatting, and flagging anomalies.</p>
           <ul class="code-highlights">
-            <li>VBA for automated data transformation</li>
-            <li>Automated $0 claim detection</li>
-            <li>Calculate report expenses</li>
+            <li>pandas for data manipulation</li>
+            <li>Automated duplicate detection</li>
+            <li>Exports clean report summary</li>
           </ul>
           <div class="code-footer">
             <div class="tech-pills">
-              <span class="pill">VBA</span><span class="pill">Excel</span><span class="pill">Pivot Tables</span>
+              <span class="pill">Python</span><span class="pill">pandas</span><span class="pill">CSV</span>
             </div>
             <div class="code-links">
               <a href="https://github.com/ssunny264" class="code-link" target="_blank" rel="noopener">GitHub →</a>
@@ -392,7 +392,7 @@
         </div>
         <div class="code-body">
           <h3>Sales Query Library</h3>
-          <p>A collection of reusable SQL queries from my Bachelor degree courses for common reporting tasks — revenue summaries, YoY comparisons, and customer segmentation.</p>
+          <p>A collection of reusable SQL queries for common reporting tasks — revenue summaries, YoY comparisons, and customer segmentation.</p>
           <ul class="code-highlights">
             <li>Window functions and CTEs</li>
             <li>Aggregation and grouping patterns</li>
@@ -422,7 +422,6 @@
           <ul class="code-highlights">
             <li>CSS custom properties &amp; fluid typography</li>
             <li>IntersectionObserver animations</li>
-            <li>AI chatbot integration</li>
           </ul>
           <div class="code-footer">
             <div class="tech-pills">
@@ -444,8 +443,8 @@
           <span class="status-badge status-complete">Complete</span>
         </div>
         <div class="code-body">
-          <h3>Power Bi Dashboard</h3>
-          <p>I have developed a Power BI report for my current workplace and I am studying for the PL-300 exam. The Exam covers DAX measures, row-level security, and paginated reports.</p>
+          <h3>PL-300 Practice Dashboard</h3>
+          <p>Practice Power BI report built while studying for the PL-300 exam. Covers DAX measures, row-level security, and paginated reports.</p>
           <ul class="code-highlights">
             <li>DAX calculated columns &amp; measures</li>
             <li>Row-level security setup</li>
@@ -493,11 +492,11 @@
         <div class="code-thumb bg-teal">
           🔍
           <span class="lang-badge">SQL</span>
-          <span class="status-badge status-progress">Learning</span>
+          <span class="status-badge status-progress">In Progress</span>
         </div>
         <div class="code-body">
           <h3>Warranty Data Analysis</h3>
-          <p>Learning how to better utilize SQL in recreating warranty claim analysis workflows to document and share the analytical approach used at Utilimaster (anonymized data).</p>
+          <p>Recreating warranty claim analysis workflows in SQL to document and share the analytical approach used at Utilimaster (anonymized data).</p>
           <ul class="code-highlights">
             <li>Claim volume trend queries</li>
             <li>Cost anomaly detection logic</li>
@@ -552,47 +551,6 @@
   </div>
 </footer>
 
-
-<!-- ============================================================
-     AI CHATBOT WIDGET — same as main page
-============================================================ -->
-<button class="chat-bubble" id="chatBubble" aria-label="Chat with Sara's AI assistant">
-  <svg class="chat-icon-open" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-  </svg>
-  <svg class="chat-icon-close" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
-  </svg>
-  <span class="chat-badge" id="chatBadge">1</span>
-</button>
-
-<div class="chat-panel" id="chatPanel" role="dialog" aria-label="Chat with Sara's AI assistant" aria-hidden="true">
-  <div class="chat-header">
-    <div class="chat-header-avatar">SS</div>
-    <div class="chat-header-info">
-      <strong>Sara's Assistant</strong>
-      <span>Ask me anything about Sara</span>
-    </div>
-    <button class="chat-close-btn" id="chatCloseBtn" aria-label="Close chat">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-    </button>
-  </div>
-  <div class="chat-messages" id="chatMessages"></div>
-  <div class="chat-chips" id="chatChips">
-    <button class="chip" data-msg="What are Sara's top skills?">Top skills</button>
-    <button class="chip" data-msg="Tell me about Sara's work experience.">Experience</button>
-    <button class="chip" data-msg="What projects has Sara worked on?">Projects</button>
-    <button class="chip" data-msg="Is Sara available for hire?">Availability</button>
-  </div>
-  <div class="chat-input-row">
-    <input type="text" class="chat-input" id="chatInput" placeholder="Ask about Sara's experience…" autocomplete="off" maxlength="300" />
-    <button class="chat-send-btn" id="chatSendBtn" aria-label="Send message">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
-      </svg>
-    </button>
-  </div>
-</div>
 
 
 <!-- ============================================================
